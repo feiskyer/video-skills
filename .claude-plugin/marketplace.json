@@ -1,0 +1,24 @@
+{
+  "name": "video-skills",
+  "owner": {
+    "name": "Pengfei Ni",
+    "url": "https://github.com/feiskyer"
+  },
+  "plugins": [
+    {
+      "name": "video-skills",
+      "source": "./",
+      "description": "Download, transcribe, and narrate videos using Claude Code",
+      "version": "1.0.0",
+      "keywords": [
+        "video",
+        "download",
+        "transcribe",
+        "narrate",
+        "voiceover",
+        "yt-dlp",
+        "tts"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "video-skills",
+  "version": "1.0.0",
+  "description": "Download, transcribe, and narrate videos",
+  "author": {
+    "name": "Pengfei Ni"
+  },
+  "repository": "https://github.com/feiskyer/video-skills",
+  "license": "MIT",
+  "keywords": ["video", "download", "transcribe", "narrate", "voiceover", "yt-dlp", "tts"]
+}
