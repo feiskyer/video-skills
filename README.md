@@ -65,20 +65,34 @@ OPENAI_API_KEY=your-key-here
 
 ### narrate-video
 
-Generate professional voiceover narration with Azure TTS. Analyzes video scenes, writes a timed script, and produces a narrated video with audio-video sync.
+Generate professional voiceover narration with Azure TTS by default, or Gemini 3.1 Flash TTS when configured. The skill analyzes video scenes, writes a timed script, and produces a narrated video with audio-video sync.
 
 **Setup:**
 
 ```bash
-pip install azure-cognitiveservices-speech python-dotenv
+pip install python-dotenv
+
+# Azure provider only
+pip install azure-cognitiveservices-speech
 ```
 
 Create `~/.narrate_video.env`:
 
 ```sh
+# Azure provider (default)
 AZURE_SPEECH_KEY=your-key-here
 AZURE_SPEECH_REGION=your-region-here
+
+# Gemini provider (optional)
+# GEMINI_API_KEY=your-key-here
+# GEMINI_TTS_MODEL=gemini-3.1-flash-tts-preview
 ```
+
+Notes:
+
+- `azure` is still the default provider.
+- To use Gemini, add `GEMINI_API_KEY` and set `TTS_PROVIDER = "gemini"` in the generated `narration_script.py`.
+- Gemini uses the official Google AI Studio / Gemini API TTS flow with model `gemini-3.1-flash-tts-preview`.
 
 **Usage:**
 
@@ -86,6 +100,7 @@ AZURE_SPEECH_REGION=your-region-here
 "Add voiceover narration to ~/Desktop/demo.mov"
 "给这个录屏加上中文旁白: ~/Downloads/screen-recording.mp4"
 "Narrate this tutorial video in English: ~/Desktop/tutorial.mov"
+"Use Gemini TTS to narrate ~/Desktop/tutorial.mov with a warm voice"
 ```
 
 ## License
