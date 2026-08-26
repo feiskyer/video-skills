@@ -2,6 +2,8 @@
 
 Skills for working with videos - download, transcribe, and narrate.
 
+[![Try video-skills on Socialistic](https://socialistic.ai/api/embed/video-skills-b768c1)](https://socialistic.ai/en/skill/video-skills-b768c1?utm_source=github&utm_medium=issue&utm_campaign=20260522-zhihu-indie-cc-devs&utm_content=badge)
+
 ## Install
 
 ### Option 1: Claude Code plugin commands
