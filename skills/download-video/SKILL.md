@@ -1,7 +1,7 @@
 ---
 name: download-video
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
 description: Download videos from 1000+ websites (YouTube, Bilibili, Twitter/X, TikTok, Vimeo, Instagram, Twitch, etc.) using yt-dlp. Use this skill whenever a user shares a video URL, asks to save or download a video, wants to extract audio from an online video, needs a specific quality like 1080p or 4K, or mentions downloading a playlist. Also trigger on "下载视频", "保存视频", "提取音频", or any URL from a supported video platform.
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: transcribe-video
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
 description: Extract transcript or subtitles from a local video file. Use this skill whenever the user asks to transcribe a video, extract speech-to-text, get subtitles, or wants a text version of what's said in a video. Also trigger on "提取字幕", "视频转文字", "语音转文字", "transcribe", "extract audio text", or when the user references getting a script/transcript from any video file (mp4, mkv, mov, avi, webm). This skill is for LOCAL video files — for YouTube or other online URLs, use the download-video skill first to get the file, then transcribe it.
 ---
 

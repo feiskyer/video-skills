@@ -2,16 +2,51 @@
 
 Skills for working with videos - download, transcribe, and narrate.
 
-## Install
+## Install and upgrade
 
-### Option 1: Claude Code plugin commands
+Plugin installation is recommended for both Claude Code and Codex. Run the following commands in your terminal.
+
+### Claude Code (recommended)
+
+Install:
 
 ```bash
-/plugin marketplace add feiskyer/video-skills
-/plugin install video-skills@video-skills
+claude plugin marketplace add feiskyer/video-skills
+claude plugin install video-skills@video-skills
 ```
 
-### Option 2: npx skills
+Upgrade:
+
+```bash
+claude plugin marketplace update video-skills
+claude plugin update video-skills@video-skills
+```
+
+Restart Claude Code after installing or upgrading. See the [Claude Code plugin documentation](https://code.claude.com/docs/en/discover-plugins).
+
+### Codex (recommended)
+
+Install:
+
+```bash
+codex plugin marketplace add feiskyer/video-skills
+codex plugin add video-skills@video-skills
+```
+
+Upgrade:
+
+```bash
+codex plugin marketplace upgrade video-skills
+codex plugin add video-skills@video-skills
+```
+
+The upgrade commands refresh the marketplace checkout and install its current plugin version. Start a new Codex session after installing or upgrading. These commands are verified with Codex CLI 0.167.0; use a current CLI with `codex plugin` support.
+
+Codex uses the root `plugin.json` and `.agents/plugins/marketplace.json`; Claude Code uses `.claude-plugin/`. Both packages include the same `skills/` directory. See the [OpenAI plugin packaging documentation](https://developers.openai.com/plugins/build/plugins).
+
+### Skill-only installation (alternative)
+
+For other agents or when you only want the skill files:
 
 ```bash
 npx skills add feiskyer/video-skills
@@ -19,7 +54,7 @@ npx skills add feiskyer/video-skills
 
 ## Dependencies
 
-Use Python 3.11 or newer. From this repository, install the tested stable dependencies in an isolated environment:
+Plugin installation does not install Python packages or external executables. Each skill includes its dependency setup instructions. Use Python 3.11 or newer; from a local checkout of this repository, install the tested stable dependencies in an isolated environment:
 
 ```bash
 python3 -m venv .venv

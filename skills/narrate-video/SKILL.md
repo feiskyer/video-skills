@@ -1,7 +1,7 @@
 ---
 name: narrate-video
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
 description: Generate professional voiceover narration for a video with audio-video sync using Azure TTS by default, or Gemini 3.1 Flash TTS when configured. Use this skill whenever the user wants to add narration, voiceover, commentary, or voice dubbing to any video file — even if they just say "add audio to this video" or "make a narrated version." Also trigger when the user has a screen recording, demo, tutorial, or presentation video that needs a voice track. Trigger on Chinese requests like "视频配音", "给视频加旁白", "录屏解说", "视频加语音", "视频添加声音", "生成视频旁白", "自动配音", "视频解说词".
 ---
 

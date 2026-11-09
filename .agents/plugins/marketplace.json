@@ -1,0 +1,20 @@
+{
+  "name": "video-skills",
+  "interface": {
+    "displayName": "Video Skills"
+  },
+  "plugins": [
+    {
+      "name": "video-skills",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
