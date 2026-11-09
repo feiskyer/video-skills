@@ -5,7 +5,8 @@ This script generates TTS audio segments using Azure Speech SDK or Gemini TTS,
 positions them at specified timestamps, and merges them onto a video.
 
 Usage:
-    1. Fill in TTS_PROVIDER, VOICE_NAME, INPUT_VIDEO, OUTPUT_VIDEO, and SEGMENTS
+    1. Fill in TTS_PROVIDER, NARRATION_LANGUAGE, INPUT_VIDEO, OUTPUT_VIDEO, and SEGMENTS
+       (Override VOICE_NAME for Gemini or an explicitly requested Azure voice)
     2. Ensure the matching provider credentials exist in ~/.narrate_video.env
     3. Run: python3 narration_script.py
 """
@@ -42,7 +43,12 @@ GEMINI_PCM_RATE = 24000
 GEMINI_PCM_CHANNELS = 1
 GEMINI_SAMPLE_WIDTH = 2
 GEMINI_MAX_RETRIES = 3
-VOICE_NAME = "REPLACE_WITH_VOICE"         # Azure: en-US-AndrewMultilingualNeural; Gemini: Kore
+AZURE_ENGLISH_VOICE = "en-US-Jimmie:DragonHDFlashLatestNeural"
+AZURE_DEFAULT_VOICE = "zh-CN-Yunxiao:DragonHDFlashLatestNeural"
+NARRATION_LANGUAGE = "other"             # Set to "en" for English narration
+VOICE_NAME = (
+    AZURE_ENGLISH_VOICE if NARRATION_LANGUAGE == "en" else AZURE_DEFAULT_VOICE
+)                                       # Override for Gemini or an explicit voice choice
 INPUT_VIDEO = "REPLACE_WITH_INPUT"        # Relative path only
 OUTPUT_VIDEO = "REPLACE_WITH_OUTPUT"      # Relative path only
 SEGMENTS_DIR = "narration_segments"       # Relative path only
@@ -256,7 +262,7 @@ def build_narrated_video():
     mix_inputs = "".join(f"[a{i}]" for i in range(n))
     filter_parts.append(
         f"{mix_inputs}amix=inputs={n}:duration=longest"
-        f":dropout_transition=0:normalize=0[final]"
+        f":dropout_transition=0:normalize=0,apad[final]"
     )
 
     # Original video audio is completely discarded — only the narration track
@@ -305,14 +311,15 @@ def check_inputs():
             errors.append("GEMINI_API_KEY not found. Add it to ~/.narrate_video.env")
         if not GEMINI_TTS_MODEL:
             errors.append("GEMINI_TTS_MODEL is empty. Set it or remove the override")
-    if VOICE_NAME == "REPLACE_WITH_VOICE":
-        if TTS_PROVIDER == "gemini":
-            errors.append("VOICE_NAME not set. Replace the placeholder with a Gemini voice (e.g. Kore)")
-        else:
-            errors.append(
-                "VOICE_NAME not set. Replace the placeholder with an Azure voice "
-                "(e.g. en-US-AndrewMultilingualNeural)"
-            )
+    if TTS_PROVIDER == "gemini" and VOICE_NAME in {
+        AZURE_DEFAULT_VOICE, AZURE_ENGLISH_VOICE
+    }:
+        errors.append(
+            "VOICE_NAME still uses an Azure default. Replace it with a Gemini voice "
+            "(e.g. Kore)"
+        )
+    elif not VOICE_NAME.strip():
+        errors.append("VOICE_NAME must not be empty")
     if INPUT_VIDEO == "REPLACE_WITH_INPUT":
         errors.append("INPUT_VIDEO not set. Replace the placeholder with the input video path")
     elif not os.path.isfile(INPUT_VIDEO):
@@ -343,4 +350,4 @@ def check_inputs():
 if __name__ == "__main__":
     if not check_inputs():
         exit(1)
-    build_narrated_video()
+    raise SystemExit(0 if build_narrated_video() else 1)

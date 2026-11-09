@@ -1,0 +1,3 @@
+-r skills/download-video/requirements.txt
+-r skills/transcribe-video/requirements.txt
+-r skills/narrate-video/requirements.txt

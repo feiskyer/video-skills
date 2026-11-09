@@ -1,5 +1,7 @@
 ---
 name: transcribe-video
+metadata:
+  version: "1.0.2"
 description: Extract transcript or subtitles from a local video file. Use this skill whenever the user asks to transcribe a video, extract speech-to-text, get subtitles, or wants a text version of what's said in a video. Also trigger on "提取字幕", "视频转文字", "语音转文字", "transcribe", "extract audio text", or when the user references getting a script/transcript from any video file (mp4, mkv, mov, avi, webm). This skill is for LOCAL video files — for YouTube or other online URLs, use the download-video skill first to get the file, then transcribe it.
 ---
 
@@ -62,7 +64,7 @@ Use the bundled transcription script. It reads credentials from `~/.transcribe_v
    ```bash
    python3 -c "from openai import OpenAI; from dotenv import load_dotenv; print('OK')" 2>&1
    ```
-   If missing: `pip install openai python-dotenv`
+   Install or update in the active virtual environment: `python -m pip install --upgrade -r <skill_directory>/requirements.txt`. Use Python 3.11 or newer.
 
 ### Run transcription
 
@@ -71,6 +73,8 @@ python3 <skill_directory>/scripts/transcribe.py "<video_path>"
 ```
 
 The script extracts audio (WAV, 16kHz mono), sends it to the API, and saves the transcript to `<video_name>.txt` next to the video file.
+
+Whisper and diarization models return segment timestamps; other transcription models return plain text. The script selects `verbose_json`, `diarized_json`, or `json` to match the model and reads the SDK's typed segment objects.
 
 ## Step 4: Report results
 

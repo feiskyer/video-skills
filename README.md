@@ -17,6 +17,28 @@ Skills for working with videos - download, transcribe, and narrate.
 npx skills add feiskyer/video-skills
 ```
 
+## Dependencies
+
+Use Python 3.11 or newer. From this repository, install the tested stable dependencies in an isolated environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade -r requirements.txt
+```
+
+The per-skill `requirements.txt` files also work when a skill is installed on its own. Direct Python dependencies are pinned to stable releases verified on 2026-11-09: yt-dlp 2026.10.26 (including its default EJS dependencies), OpenAI 3.46.0, python-dotenv 1.2.4, and Azure Speech SDK 1.53.0.
+
+FFmpeg and ffprobe are external executables. YouTube downloads also require a supported JavaScript runtime; Deno is recommended. The tested stable versions are FFmpeg 9.0.2 and Deno 2.9.8. On macOS:
+
+```bash
+brew install ffmpeg deno
+# If already installed:
+brew upgrade ffmpeg deno
+```
+
+These are library/tool versions. Existing transcription deployments, API versions, and the optional Gemini preview model are configured separately and are not changed by installing dependencies.
+
 ## Skills
 
 ### download-video
@@ -26,7 +48,8 @@ Download videos from YouTube, Bilibili, Twitter/X, TikTok, and 1000+ other sites
 **Setup:**
 
 ```bash
-brew install yt-dlp ffmpeg
+python -m pip install --upgrade -r skills/download-video/requirements.txt
+brew install ffmpeg deno
 ```
 
 **Usage:**
@@ -44,7 +67,7 @@ Extract transcript from local video files. Checks for embedded subtitles first, 
 **Setup:**
 
 ```bash
-pip install openai python-dotenv
+python -m pip install --upgrade -r skills/transcribe-video/requirements.txt
 ```
 
 Create `~/.transcribe_video.env`:
@@ -52,7 +75,7 @@ Create `~/.transcribe_video.env`:
 ```sh
 OPENAI_API_KEY=your-key-here
 # OPENAI_API_BASE=https://<base-url>/v1/      # Optional Base URL
-# TRANSCRIBE_MODEL=gpt-4o-transcribe-diarize. # Optional Model Name
+# TRANSCRIBE_MODEL=gpt-4o-transcribe-diarize  # Optional Model Name
 ```
 
 **Usage:**
@@ -70,10 +93,7 @@ Generate professional voiceover narration with Azure TTS by default, or Gemini 3
 **Setup:**
 
 ```bash
-pip install python-dotenv
-
-# Azure provider only
-pip install azure-cognitiveservices-speech
+python -m pip install --upgrade -r skills/narrate-video/requirements.txt
 ```
 
 Create `~/.narrate_video.env`:

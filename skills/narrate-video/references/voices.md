@@ -2,22 +2,33 @@
 
 ## Provider overview
 
-- `azure` is the default provider. It uses language-specific Azure Neural voices.
+- `azure` is the default provider. English narration defaults to `en-US-Jimmie:DragonHDFlashLatestNeural`; all other narration defaults to `zh-CN-Yunxiao:DragonHDFlashLatestNeural`.
 - `gemini` uses `gemini-3.1-flash-tts-preview` and AI Studio's prebuilt voice library. Gemini voices are style-based rather than language-specific.
 
-## Azure: recommended voices by language
+## Azure: default voices
+
+Select by the actual narration language. Use Jimmie for English and Yunxiao otherwise, including mixed Chinese and English. An explicit user voice choice overrides this rule.
+
+| Narration | Voice Name |
+|-----------|------------|
+| English | `en-US-Jimmie:DragonHDFlashLatestNeural` |
+| Other | `zh-CN-Yunxiao:DragonHDFlashLatestNeural` |
+
+HD Flash supports Chinese and English text. The non-English default is a selection policy, not a guarantee of support for other languages; for unsupported text, explain the limitation before synthesis rather than silently translating or substituting voices.
+
+## Azure: optional voices for explicit language-specific requests
+
+These alternatives do not replace the default selection rule above.
 
 | Language | Voice Name |
 |----------|------------|
-| English | `en-US-AndrewMultilingualNeural` |
-| Chinese (Mandarin) | `zh-CN-YunxiMultilingualNeural` |
 | Japanese | `ja-JP-MasaruMultilingualNeural` |
 | Korean | `ko-KR-HyunsuMultilingualNeural` |
 | French | `fr-FR-VivienneMultilingualNeural` |
 | German | `de-DE-FlorianMultilingualNeural` |
 | Spanish | `es-ES-XimenaMultilingualNeural` |
 
-For unlisted languages, prefer Azure `MultilingualNeural` voices first, then the best available `Neural` voice.
+For an explicit request for another unlisted language, prefer Azure `MultilingualNeural` voices first, then the best available `Neural` voice.
 
 ## Gemini: recommended voices by style
 

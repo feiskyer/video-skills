@@ -23,7 +23,7 @@ For persistent high-quality access without browser dependency:
 head -1 $(which yt-dlp)
 
 # Install the plugin
-/path/to/python -m pip install bgutil-ytdlp-pot-provider
+/path/to/python -m pip install --upgrade bgutil-ytdlp-pot-provider==2.0.2
 ```
 
 ### Age-Restricted Content

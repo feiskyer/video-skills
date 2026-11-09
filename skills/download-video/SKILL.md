@@ -1,5 +1,7 @@
 ---
 name: download-video
+metadata:
+  version: "1.0.2"
 description: Download videos from 1000+ websites (YouTube, Bilibili, Twitter/X, TikTok, Vimeo, Instagram, Twitch, etc.) using yt-dlp. Use this skill whenever a user shares a video URL, asks to save or download a video, wants to extract audio from an online video, needs a specific quality like 1080p or 4K, or mentions downloading a playlist. Also trigger on "下载视频", "保存视频", "提取音频", or any URL from a supported video platform.
 ---
 
@@ -11,18 +13,20 @@ Download videos from YouTube, Bilibili, Twitter/X, TikTok, and 1000+ other sites
 
 ```bash
 which yt-dlp && yt-dlp --version
-which ffmpeg
+which ffmpeg && which ffprobe
+which deno && deno --version
 ```
 
-If yt-dlp is missing, install it:
+Use Python 3.11 or newer. Install or update the stable Python dependencies in the active virtual environment (`<skill_directory>` is this skill's directory):
 
 ```bash
-# macOS
-brew install yt-dlp ffmpeg
+python -m pip install --upgrade -r <skill_directory>/requirements.txt
 
-# Cross-platform
-pip install yt-dlp
+# macOS: install external tools (use brew upgrade if already installed)
+brew install ffmpeg deno
 ```
+
+The dependency file includes yt-dlp's default extras, including the EJS challenge solver. Deno is needed for full YouTube support. Keep the virtual environment active so the bundled script invokes the updated `yt-dlp` executable. See the [official EJS guide](https://github.com/yt-dlp/yt-dlp/wiki/EJS) for other JavaScript runtimes.
 
 ## Step 2: Download
 

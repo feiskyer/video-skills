@@ -53,7 +53,7 @@ def main():
             result = client.audio.transcriptions.create(
                 model=model,
                 file=f,
-                response_format="json",
+                response_format="diarized_json",
                 chunking_strategy="auto",
             )
     else:
@@ -61,15 +61,15 @@ def main():
             result = client.audio.transcriptions.create(
                 model=model,
                 file=f,
-                response_format="verbose_json",
+                response_format="verbose_json" if "whisper" in model else "json",
             )
 
     # Write output
     if hasattr(result, "segments") and result.segments:
         lines = []
         for seg in result.segments:
-            ts = f"{int(seg['start']//60):02d}:{int(seg['start']%60):02d}"
-            lines.append(f"{ts} {seg['text'].strip()}")
+            ts = f"{int(seg.start//60):02d}:{int(seg.start%60):02d}"
+            lines.append(f"{ts} {seg.text.strip()}")
         output_path.write_text("\n".join(lines), encoding="utf-8")
         print(f"Saved to {output_path} ({len(lines)} lines)")
     else:

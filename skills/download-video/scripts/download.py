@@ -6,7 +6,8 @@ Supports 1000+ websites including YouTube, Bilibili, Twitter/X, TikTok, and more
 Default output directory: ~/Downloads/Videos/
 
 Requirements:
-    - yt-dlp: Install via `brew install yt-dlp` (macOS) or `pip install yt-dlp`
+    - Python 3.11+ with the packages in this skill's requirements.txt
+    - ffmpeg and ffprobe; Deno for YouTube downloads
 
 Usage:
     python3 download.py "VIDEO_URL"
@@ -23,6 +24,7 @@ from pathlib import Path
 
 
 DEFAULT_OUTPUT_DIR = "~/Downloads/Videos"
+REQUIREMENTS_FILE = Path(__file__).resolve().parents[1] / "requirements.txt"
 
 
 def check_yt_dlp() -> bool:
@@ -67,7 +69,10 @@ def download(
     """
     if not check_yt_dlp():
         print("Error: yt-dlp is not installed")
-        print("Install via: brew install yt-dlp  # or: pip install yt-dlp")
+        print(
+            "Install in the active virtual environment: "
+            f'python -m pip install --upgrade -r "{REQUIREMENTS_FILE}"'
+        )
         return 1
 
     print(f"yt-dlp version: {get_yt_dlp_version()}")
@@ -115,7 +120,10 @@ def download(
     else:
         print(f"\nDownload failed (exit code: {result.returncode})")
         print("\nTroubleshooting tips:")
-        print("  1. Update yt-dlp: brew upgrade yt-dlp")
+        print(
+            "  1. Update yt-dlp: "
+            f'python -m pip install --upgrade -r "{REQUIREMENTS_FILE}"'
+        )
         print("  2. Try with cookies: python3 download.py URL --cookies chrome")
         print("  3. Check formats: python3 download.py URL -F")
 

@@ -1,5 +1,7 @@
 ---
 name: narrate-video
+metadata:
+  version: "1.0.2"
 description: Generate professional voiceover narration for a video with audio-video sync using Azure TTS by default, or Gemini 3.1 Flash TTS when configured. Use this skill whenever the user wants to add narration, voiceover, commentary, or voice dubbing to any video file — even if they just say "add audio to this video" or "make a narrated version." Also trigger when the user has a screen recording, demo, tutorial, or presentation video that needs a voice track. Trigger on Chinese requests like "视频配音", "给视频加旁白", "录屏解说", "视频加语音", "视频添加声音", "生成视频旁白", "自动配音", "视频解说词".
 ---
 
@@ -25,9 +27,20 @@ Default to `azure` unless the user explicitly asks for Gemini or already has `GE
 
 ### Language
 
-Ask the user which language they want. Default to **English**. Look up the voice and speech rate in [references/voices.md](references/voices.md).
+Use the language of the actual narration text, not the language of the user's instructions. For Azure, unless the user explicitly chooses a voice:
+- English narration: set `NARRATION_LANGUAGE = "en"`; use `en-US-Jimmie:DragonHDFlashLatestNeural`.
+- All other narration, including mixed Chinese and English: set `NARRATION_LANGUAGE = "other"`; use `zh-CN-Yunxiao:DragonHDFlashLatestNeural`.
+
+Do not ask for language confirmation when the narration text is already provided. An explicit voice choice overrides these defaults. Gemini voice selection remains provider-specific. See [references/voices.md](references/voices.md) for timing estimates and optional voices.
 
 ### Environment
+
+Use Python 3.11 or newer. Install or update the stable dependencies in the active virtual environment (`<skill_directory>` is this skill's directory):
+
+```bash
+python -m pip install --upgrade -r <skill_directory>/requirements.txt
+```
+
 
 ```bash
 # 1. Check provider credentials exist (NEVER read or display their values)
@@ -142,7 +155,8 @@ If a segment is too long, shorten the text now — trimming words is much cheape
 
 Copy [scripts/narration_script_template.py](scripts/narration_script_template.py) into the video's directory as `narration_script.py`. Fill in:
 - `TTS_PROVIDER` as `azure` or `gemini`
-- `VOICE_NAME` from the provider-specific table
+- `NARRATION_LANGUAGE`: `"en"` for English narration, `"other"` otherwise, following Phase 0.
+- `VOICE_NAME`: keep the language-based Azure default unless the user explicitly chooses another voice. For Gemini, set a Gemini voice such as `Kore`.
 - `INPUT_VIDEO` and `OUTPUT_VIDEO` (relative paths only)
 - `SEGMENTS` from Phase 2
 
@@ -153,7 +167,7 @@ These choices come from debugging real production issues:
 - **`normalize=0` on amix**: ffmpeg's `amix` divides volume by input count by default. With 20 segments, output would be 1/20th volume — essentially silent.
 - **Discarding original audio**: Even mixing original audio at 5% volume produces audible double-voice artifacts.
 - **Aborting on overlap**: If any segment's audio extends past the next segment's start time, the script stops and reports the problem. Overlapping audio sounds broken.
-- **Skipping existing audio files**: The script only generates audio for segments without an existing cached file. Azure uses `.mp3`; Gemini uses `.wav`. If you change a segment's text, delete the matching `seg_XXX.*` file before re-running.
+- **Skipping existing audio files**: The script only generates audio for segments without an existing cached file. Azure uses `.mp3`; Gemini uses `.wav`. If you change a segment's text or voice, use a fresh output directory or remove the matching `seg_XXX.*` file before re-running.
 - **Gemini retry logic**: Gemini 3.1 Flash TTS can occasionally return transient `500` errors. The template retries a few times automatically before failing.
 
 ---
